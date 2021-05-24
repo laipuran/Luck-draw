@@ -8,7 +8,7 @@
         Height="450" Width="800"
         Icon="/Resources/Favicon.png"
         WindowStartupLocation="CenterScreen"
-        Focusable="False">
+        Focusable="False" Background="WhiteSmoke">
     <Window.Resources>
         <Storyboard x:Key="CloseMenu">
             <DoubleAnimationUsingKeyFrames 
@@ -68,8 +68,7 @@
                 FontSize="36"
                 Style="{StaticResource PaneTextBlockStyle}"
                 Height="56"
-                Background="White"
-                Opacity="0.5"/>
+                Background="White"/>
         </StackPanel>
 
 
@@ -87,7 +86,7 @@
 
                 <ListBoxItem Style="{StaticResource ListBoxItemStyle}" Name="LuckDrawListBoxItem" Height="56" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Style="{StaticResource NavigationEmojiStyle}">&#127873;</TextBlock>
+                        <TextBlock Style="{StaticResource NavigationEmojiStyle}">&#xE10F;</TextBlock>
                         <TextBlock Style="{StaticResource PaneTextBlockStyle}">抽奖</TextBlock>
                     </StackPanel>
                 </ListBoxItem>
@@ -101,7 +100,7 @@
 
                 <ListBoxItem Style="{StaticResource ListBoxItemStyle}" Name="SettingsListBoxItem" Height="56" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Style="{StaticResource NavigationEmojiStyle}">&#9881;</TextBlock>
+                        <TextBlock Style="{StaticResource NavigationEmojiStyle}">&#xE115;</TextBlock>
                         <TextBlock Style="{StaticResource PaneTextBlockStyle}">设置</TextBlock>
                     </StackPanel>
                 </ListBoxItem>

@@ -24,7 +24,6 @@ namespace LuckDraw
         public static extern bool IsWindowVisible(IntPtr hWnd);
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
-        Window window = App.Window;
         public Floating()
         {
             InitializeComponent();
@@ -71,22 +70,15 @@ namespace LuckDraw
             }
             IntPtr handle = FindWindow(null, "Floating");
             ShowWindowAsync(handle, 1);
-
         }
         private void MainWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow();
-        }
-        public void MainWindow()
-        {
-            Window window = App.Window;
-            window.WindowState = WindowState.Normal;
-            window.Visibility = Visibility.Visible;
-            window.ShowInTaskbar = true;
+            App.Window.ShowInTaskbar = true;
+            App.Window.Visibility = Visibility.Visible;
         }
         private void SeewoWhiteBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            IntPtr seewoWhiteBoard = FindWindow(null, "EasiNote");
+            IntPtr seewoWhiteBoard = FindWindow(null, "希沃白板");
             if (seewoWhiteBoard != IntPtr.Zero)
             {
                 ShowWindowAsync(seewoWhiteBoard, 1);
@@ -96,11 +88,6 @@ namespace LuckDraw
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             App.closeApp = true;
-            if (window == null)
-            {
-                MainWindow();
-            }
-            window.Close();
         }
     }
 }

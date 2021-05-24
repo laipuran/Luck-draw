@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Application = System.Windows.Application;
@@ -10,24 +11,18 @@ namespace LuckDraw
     /// </summary>
     public partial class App : Application
     {
-        internal static int numberOfPeople;
-        internal static bool doShowToasts;
-        internal static bool closeApp = false;
-        internal static Window FloatingWindow = new Floating();
-        internal static NotifyIcon trayIcon;
+        internal static int numberOfPeople = LuckDraw.Properties.Settings.Default.numberOfPeople;
+        internal static Window Floating = new Floating();
         internal static Window Window = new MainWindow();
+        internal static bool closeApp = false;
+        internal static NotifyIcon trayIcon;
         protected override void OnStartup(StartupEventArgs e)
         {
             ShowSplashScreen();
             AddTrayIcon();
+            Floating.Show();
+            Task.Run(ExitApp);
             base.OnStartup(e);
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            closeApp = true;
-            RemoveTrayIcon();
-            base.OnExit(e);
         }
         private void ShowSplashScreen()
         {
@@ -37,10 +32,6 @@ namespace LuckDraw
         private void AddTrayIcon()
         {
             Icon icon = LuckDraw.Properties.Resources.favicon;
-            if (trayIcon != null)
-            {
-                return;
-            }
             trayIcon = new NotifyIcon
             {
                 Icon = icon,
@@ -58,11 +49,24 @@ namespace LuckDraw
             });
             menuStrip.Items.Add("退出", null, (sender, eventArgs) => {
                 closeApp = true;
-                MainWindow.Close();
             });
             
             trayIcon.ContextMenuStrip = menuStrip;
         }
+        private void ExitApp()
+        {
+            while (true)
+            {
+                if (closeApp)
+                {
+                    Window.Close();
+                    Floating.Close();
+                    RemoveTrayIcon();
+                    return;
+                }
+                Task.Delay(500);
+            }
+        } 
         public void RemoveTrayIcon()
         {
             if (trayIcon != null)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -23,28 +24,11 @@ namespace LuckDraw
         {
             InitializeComponent();
 
-            if (App.closeApp)
-            {
-                Close();
-                return;
-            }
-            GetBingWallPaper();
-            App.numberOfPeople = Properties.Settings.Default.numberOfPeople;
-
-            System.Security.Principal.WindowsIdentity identity = System.Security.Principal.WindowsIdentity.GetCurrent();
-            System.Security.Principal.WindowsPrincipal principal = new System.Security.Principal.WindowsPrincipal(identity);
-
-            if (principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
-            {
-                Title += "（管理员）";
-            }
-
-            App.FloatingWindow.Show();
-
             MiddleStackPanel.Width = 56;
             BackButton.Visibility = Visibility.Collapsed;
             LuckDrawListBoxItem.IsSelected = true;
             TitleTextBlock.Text = "抽奖";
+            // Task.Run(GetBingWallPaper);
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -67,21 +51,21 @@ namespace LuckDraw
         {
             if (LuckDrawListBoxItem.IsSelected)
             {
-                FrameOfMainWindow.NavigationService.Navigate(new Uri("LuckDrawPage.xaml", UriKind.Relative));
+                FrameOfMainWindow.NavigationService.Navigate(new Uri("Views/LuckDrawPage.xaml", UriKind.Relative));
                 BackButton.Visibility = Visibility.Collapsed;
                 TitleTextBlock.Text = "抽奖";
                 return;
             }
             if (RollListBoxItem.IsSelected)
             {
-                FrameOfMainWindow.NavigationService.Navigate(new Uri("RollPage.xaml", UriKind.Relative));
+                FrameOfMainWindow.NavigationService.Navigate(new Uri("Views/RollPage.xaml", UriKind.Relative));
                 BackButton.Visibility = Visibility.Visible;
                 TitleTextBlock.Text = "摇奖";
                 return;
             }
             if (SettingsListBoxItem.IsSelected)
             {
-                FrameOfMainWindow.NavigationService.Navigate(new Uri("SettingsPage.xaml", UriKind.Relative));
+                FrameOfMainWindow.NavigationService.Navigate(new Uri("Views/SettingsPage.xaml", UriKind.Relative));
                 BackButton.Visibility = Visibility.Visible;
                 TitleTextBlock.Text = "设置";
                 return;
@@ -92,22 +76,37 @@ namespace LuckDraw
             if (FrameOfMainWindow.CanGoBack)
             {
                 FrameOfMainWindow.GoBack();
-                if (FrameOfMainWindow.Source.ToString() == "LuckDrawPage.xaml")
+                if (FrameOfMainWindow.Source.ToString() == "Views/LuckDrawPage.xaml")
                 {
                     LuckDrawListBoxItem.IsSelected = true;
                     return;
                 }
-                if (FrameOfMainWindow.Source.ToString() == "RollPage.xaml")
+                if (FrameOfMainWindow.Source.ToString() == "Views/RollPage.xaml")
                 {
                     RollListBoxItem.IsSelected = true;
                     return;
                 }
-                if (FrameOfMainWindow.Source.ToString() == "SettingsPage.xaml")
+                if (FrameOfMainWindow.Source.ToString() == "Views/SettingsPage.xaml")
                 {
                     SettingsListBoxItem.IsSelected = true;
                     return;
                 }
             }
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Visibility = Visibility.Collapsed;
+            ShowInTaskbar = false;
+            e.Cancel = !App.closeApp;
+
+            base.OnClosing(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            Properties.Settings.Default.numberOfPeople = App.numberOfPeople;
+            Properties.Settings.Default.Save();
+
+            base.OnClosed(e);
         }
         public void GetBingWallPaper()
         {
@@ -119,38 +118,17 @@ namespace LuckDraw
             var match = Regex.Match(html, "id=\"bgLink\".*?href=\"(.+?)\"");
             string url = string.Format("https://cn.bing.com{0}", match.Groups[1].Value);
 
-            var filePath = Path.Combine(Path.GetTempPath(), "bing.jpg");
+            var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Console.WriteLine(filePath);
             try
             {
                 client.DownloadFile(url, filePath);
+                ImageBrush brush = new ImageBrush();
+                brush.ImageSource = new BitmapImage(new Uri(filePath));
+                brush.Stretch = Stretch.UniformToFill;
+                Background = brush;
             }
-            catch
-            {
-                filePath += "1";
-                client.DownloadFile(url, filePath);
-            }
-            ImageBrush brush = new ImageBrush();
-            brush.ImageSource = new BitmapImage(new Uri(filePath));
-            brush.Opacity = 0.5;
-            brush.Stretch = Stretch.UniformToFill;
-            Background = brush;
-        }
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-            ShowInTaskbar = false;
-            e.Cancel = !App.closeApp;
-
-            base.OnClosing(e);
-        }
-        protected override void OnClosed(EventArgs e)
-        {
-            Properties.Settings.Default.numberOfPeople = App.numberOfPeople;
-            Properties.Settings.Default.Save();
-
-            App.FloatingWindow.Close();
-
-            base.OnClosed(e);
+            catch { }
         }
     }
 }
