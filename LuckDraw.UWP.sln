@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuckDrawUWP", "LuckDrawUWP\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{4CD6416B-7EF9-43AD-B7A5-917E2EBBFA2D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{21EC1852-6BCB-423E-987F-CB78840EB0D5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\Shared.projitems*{2f804bc1-01e6-49f4-9947-dc43639ba034}*SharedItemsImports = 4
@@ -59,6 +61,20 @@ Global
 		{2F804BC1-01E6-49F4-9947-DC43639BA034}.Release|x86.ActiveCfg = Release|x86
 		{2F804BC1-01E6-49F4-9947-DC43639BA034}.Release|x86.Build.0 = Release|x86
 		{2F804BC1-01E6-49F4-9947-DC43639BA034}.Release|x86.Deploy.0 = Release|x86
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|Any CPU.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|ARM.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|ARM64.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|iPhone.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|iPhoneSimulator.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|x64.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Debug|x86.ActiveCfg = Debug
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|Any CPU.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|ARM.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|ARM64.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|iPhone.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|iPhoneSimulator.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|x64.ActiveCfg = Release
+		{21EC1852-6BCB-423E-987F-CB78840EB0D5}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
